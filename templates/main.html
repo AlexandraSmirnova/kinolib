@@ -8,9 +8,16 @@
             <a href = "/" class = "btn btn-primary"> По названию</a>
             <a href = "/pub_date" class = "btn btn-primary"> По дате</a>
             <a href = "/rating" class = "btn btn-primary"> По рейтингу</a>
+
         </div>
-		{% for  film_item in object_list %}
-			{% include "card.html" %}
-		{% endfor %}
+        <div>
+            {% for  film_item in object_list %}
+                {% include "card.html" %}
+            {% endfor %}
+        </div>
+        <div>
+            <a href = "/new_film" class = "btn btn-primary"> Добавить фильм </a>
+        </div>
+
 	</div>
 {% endblock %}

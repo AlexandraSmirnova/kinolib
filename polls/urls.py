@@ -8,6 +8,7 @@ urlpatterns = patterns('',
 	url(r'^login$', views.login, name = 'login'),
 	url(r'^logout$', views.logout, name = 'logout'),
 	url(r'^reg$', views.register, name = 'reg'),
+	url(r'^new_film$', views.new_film, name = 'new_film'),
 	url(r'^confirm/(?P<key>\w+)$', views.register_confirm, name = 'confirm'),
 	url(r'^film/(?P<pk>\d+)$', views.FilmItem.as_view(), name = 'film'),
 )

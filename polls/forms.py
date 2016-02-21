@@ -3,6 +3,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+from polls.models import Film
+
 
 class RegistrationForm(UserCreationForm):
     # username = forms.CharField(label="Your Name", widget = forms.TextInput())
@@ -41,3 +43,15 @@ class RegistrationForm(UserCreationForm):
             user.save()
 
         return user
+
+
+class FilmForm(forms.ModelForm):
+    class Meta:
+        model = Film
+
+        fields = ('f_name', 'f_discription', 'f_year_creation')
+        widgets = {
+            'f_name': forms.TextInput(
+                attrs={'required': True}
+            ),
+        }

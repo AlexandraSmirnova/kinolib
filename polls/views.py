@@ -63,6 +63,8 @@ def login(request):
 def register(request):
     context = {}
     form = RegistrationForm()
+    context['title'] = u'Регистрация'
+    context['form_url'] = '/reg'
     #if request.user.is_authenticated:
     #    return HttpResponseRedirect(reverse("main"))
     if request.POST:
@@ -125,6 +127,23 @@ def register_confirm(request, key):
     context['title'] = "Congratulations!"
     context['message'] = "You has been activated"
     return render(request, 'message.html', context)
+
+@login_required
+def new_film(request):
+    context = {}
+    form = FilmForm()
+    context['title'] = u'Новый фильм'
+    context['form_url'] = '/new_film'
+    if request.POST:
+        form = FilmForm(request.POST)
+        context['form'] = form
+        if form.is_valid():
+            form.save()
+
+        return redirect('/')
+    else:
+        context['form'] = form
+    return render(request, 'registration.html', context)
 
 
 class FilmItem(DetailView):

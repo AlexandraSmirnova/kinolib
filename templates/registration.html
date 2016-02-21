@@ -4,11 +4,11 @@
 	{% if message  %}
 		<h3> {{ message }}</h3>
 	{% else %}
-		<form class="form-horizontal" enctype="multipart/form-data" method = "post" action = '/reg'>
+		<form class="form-horizontal" enctype="multipart/form-data" method = "post" action = ' {{ form_url }}'>
 			{% csrf_token %}
 			
 			<fieldset>
-				<legend>Registration</legend>
+				<legend> {{ title }}</legend>
 				<div class="controls"> 
 					{%for f in form%}
 						{{ f.label_tag }} 
