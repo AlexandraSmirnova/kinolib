@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method = "post" action = "/login" class="form-horizontal">
+	{% csrf_token %}
+	<fieldset>
+		<legend>Sign in</legend>
+		<div class="control-group">
+			<label class="control-label" for="input01">Email</label>
+			<input type="text" class="input-small" name="email" placeholder="Email"><br><br>
+				<label class="control-label" for="input02">Password</label>
+			<input type="password" class="input-small" name="password" placeholder="Password"><br><br>
+			{%if error%}
+				<div class = "alert-error input-xlarge">
+					{{ error }}
+				</div>
+			{%endif%}
+			<button type="submit" class="btn btn-primary">Sign in</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}

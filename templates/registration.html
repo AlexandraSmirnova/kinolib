@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if message  %}
+		<h3> {{ message }}</h3>
+	{% else %}
+		<form class="form-horizontal" enctype="multipart/form-data" method = "post" action = '/reg'>
+			{% csrf_token %}
+			
+			<fieldset>
+				<legend>Registration</legend>
+				<div class="controls"> 
+					{%for f in form%}
+						{{ f.label_tag }} 
+						{{ f }}
+						<div class = "alert-error input-large">
+							{{ f.errors }}
+						</div>
+					{% endfor %}
+					* - required for filling<br>
+					{%if error%}
+						<div class = "alert-error input-large">
+							{{ error }}
+						</div>
+					{%endif%}
+					<button type="submit" class="btn btn-primary">Join</button>
+				</div>  
+			</fieldset> 
+		</form>
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+     <div>
+        <legend>{{ object }}</legend>
+        <div>{{ object.f_discription}}</div>
+        <div>Score:
+             {%  for raiting in max_raiting %}
+                 <button>{{ raiting }}</button>
+             {% endfor %}
+        </div>
+     </div>
+{% endblock%}

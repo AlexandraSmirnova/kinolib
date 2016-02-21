@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+	
+{% block content %}
+	<div class = "main-page">
+		<h1>Главная страница</h1>
+
+        <div>
+            <a href = "/" class = "btn btn-primary"> По названию</a>
+            <a href = "/pub_date" class = "btn btn-primary"> По дате</a>
+            <a href = "/rating" class = "btn btn-primary"> По рейтингу</a>
+        </div>
+		{% for  film_item in object_list %}
+			{% include "card.html" %}
+		{% endfor %}
+	</div>
+{% endblock %}

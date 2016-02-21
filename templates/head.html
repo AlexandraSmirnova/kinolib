@@ -1,0 +1,15 @@
+<div class = "header navbar navbar-inner">
+ 	<div class = "row">
+ 		<span class = "span3">
+ 			<h1><a href = "/" class = "header__logo ">KINOLIB</a></h1>
+ 		</span>
+
+		{% if user.is_authenticated %}
+			{{request.user}}						
+			<a href = "/logout"> Выйти </a>
+		{% else %}					
+ 			<a href = "/login"> Войти </a>|
+ 			<a href = "/reg"> Регистрация </a>
+ 		{% endif %}
+ 	</div>
+</div>
