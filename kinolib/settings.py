@@ -79,8 +79,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME':  'kino_db',
-        'USER': 'root',
-        'PASSWORD': '123',
+        'USER': 'kino_user',
+        'PASSWORD': 'secret',
     }
 }
 
