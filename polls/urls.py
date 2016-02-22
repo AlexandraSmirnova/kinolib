@@ -11,5 +11,5 @@ urlpatterns = patterns('',
 	url(r'^new_film$', views.new_film, name = 'new_film'),
 	url(r'^confirm/(?P<key>\w+)$', views.register_confirm, name = 'confirm'),
 	url(r'^film/(?P<pk>\d+)$', views.FilmItem.as_view(), name = 'film'),
+	url(r'^comment$', views.add_comment, name = 'add comment'),
 )
-

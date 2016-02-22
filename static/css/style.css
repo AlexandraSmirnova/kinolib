@@ -1,25 +1,45 @@
 ﻿.main-page {
-	max-width: 1200;
-	margin-left: auto;
+    max-width: 1200px;
+    margin-left: auto;
     margin-right: auto;
 }
 
-.film-mini-card {	
-	margin: 7px;
-	min-height: 50px;
-	float: left;
-	max-width: 380px;
-	min-width: 200px;
-	width: 100%;
-	background-color: #90d9e5;	
-	border-radius: 10px;
-  	box-shadow: 0 0 5px 3px #04406d;
-}
-
 .header__logo {
-    color:	#999;
+    color: #999;
 }
 
 .header__logo:hover {
     text-decoration: none;
+}
+
+.film-mini-card {
+    margin: 7px;
+    min-height: 50px;
+    float: left;
+    max-width: 380px;
+    min-width: 200px;
+    width: 100%;
+    background-color: #90d9e5;
+    border-radius: 10px;
+    box-shadow: 0 0 5px 3px #04406d;
+}
+
+.film-card {
+    margin: 20px;
+}
+.film-card__info {
+    background-color: #ad8961;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.comment {
+    background-color: #e5ecea;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.comment__info {
+    color: #04406d;
 }

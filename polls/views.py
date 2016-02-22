@@ -1,23 +1,19 @@
 # encoding: utf-8
-from django.shortcuts import  get_object_or_404
-from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib import auth
-from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.core.context_processors import csrf
 from forms import *
 from models import *
-from django.template import RequestContext
-from django.core.mail import send_mail
+import django.core.mail
 import hashlib, datetime, random
 from django.utils import timezone
 
 
 class Main(ListView):
-    #model = Film
+    # model = Film
     queryset = Film.objects.order_by("-f_name")
     template_name = "main.html"
 
@@ -48,14 +44,15 @@ def login(request):
     context = {}
     if request.POST:
         email = request.POST['email']
+        password = request.POST['password']
         try:
-            name = User.objects.get(email=email)
-            user1= auth.authenticate(username=name, password=password)
+            user = User.objects.get(email=email)
+            user1 = auth.authenticate(username=user.username, password=password)
             if user1 is not None:
                 auth.login(request, user1)
                 return redirect('/')
         except:
-            context['error'] = "Login or password is incorrect"
+            context['error'] = "Email or password is incorrect"
             return render(request, 'login.html', context)
     return render(request, 'login.html', context)
 
@@ -65,7 +62,7 @@ def register(request):
     form = RegistrationForm()
     context['title'] = u'Регистрация'
     context['form_url'] = '/reg'
-    #if request.user.is_authenticated:
+    # if request.user.is_authenticated:
     #    return HttpResponseRedirect(reverse("main"))
     if request.POST:
         form = RegistrationForm(request.POST)
@@ -92,10 +89,12 @@ def register(request):
             email_body = "Hey %s, thanks for signing up. To activate your account, click this link within \
                                 48hours http://kinolib.com/confirm/%s" % (username, activation_key)
 
-            send_mail(email_subject, email_body, 'myemail@example.com',
-                      [email], fail_silently=False)
-
-        return render(request, 'registration.html', context)
+            django.core.mail.send_mail(email_subject, email_body, 'myemail@example.com',
+                                       [email], fail_silently=False)
+            context['title'] = u"Подтверждение регистрации"
+            context['message'] = u"На указанный почтовый ящик для подтверждения регистрации было отправлено письмо"
+            return render(request, 'message.html', context)
+        #return render(request, 'registration.html', context)
     else:
         context['form'] = form
     return render(request, 'registration.html', context)
@@ -124,9 +123,10 @@ def register_confirm(request, key):
     user = user_profile.user
     user.is_active = True
     user.save()
-    context['title'] = "Congratulations!"
-    context['message'] = "You has been activated"
+    context['title'] = u"Ура!"
+    context['message'] = u"Спасибо за подтверждение регистрации"
     return render(request, 'message.html', context)
+
 
 @login_required
 def new_film(request):
@@ -139,7 +139,6 @@ def new_film(request):
         context['form'] = form
         if form.is_valid():
             form.save()
-
         return redirect('/')
     else:
         context['form'] = form
@@ -152,5 +151,28 @@ class FilmItem(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(FilmItem, self).get_context_data(**kwargs)
-        context["max_raiting"] = range(1,11)
+        context['max_raiting'] = range(1, 11)
+        context['comments'] = Comment.objects.filter(film=self.object)
         return context
+
+
+@login_required
+def add_comment(request):
+    import json
+    if request.method == 'POST':
+        post_text = request.POST.get('the_post')
+        film = Film.objects.get(pk=request.POST.get('film'))
+        response_data = {}
+
+        post = Comment(c_text=post_text, author=request.user, film=film)
+        post.save()
+
+        response_data['result'] = 'Create post successful!'
+        response_data['postpk'] = post.pk
+        response_data['text'] = post.c_text
+        response_data['created'] = post.c_pub_date.strftime('%B %d, %Y %I:%M %p')
+        response_data['author'] = post.author.username
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({"nothing to see": "this isn't happening"}), content_type="application/json")

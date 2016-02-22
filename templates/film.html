@@ -1,13 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-     <div>
-        <legend>{{ object }}</legend>
-        <div>{{ object.f_discription}}</div>
-        <div>Score:
-             {%  for raiting in max_raiting %}
-                 <button>{{ raiting }}</button>
-             {% endfor %}
+    <div class = film-card>
+        <div class = "film-card__info">
+            <legend>{{ object }}</legend>
+            <div>{{ object.f_discription}}</div>
+            <div>Score:
+                 {%  for raiting in max_raiting %}
+                     <button>{{ raiting }}</button>
+                 {% endfor %}
+            </div>
         </div>
-     </div>
+
+        <div class = "comments-block">
+            {%  for comment in comments %}
+                <div class = "comment">
+                    <div class = "comment__info">
+                        <span>{{ comment.author }}</span>
+                        <span> {{ comment.c_pub_date }}</span>
+                    </div>
+                    <div>{{ comment }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if user.is_authenticated %}
+            <form  method = 'post'  id='comment-form'>
+                {% csrf_token %}
+                <textarea id="form-text" cols="200" rows="2" placeholder= "Input your comment here"></textarea>
+                <input type="hidden" value="{{ object.pk }}" id="film_info">
+                {% if error %}
+                    <div class = "alert-error input-xlarge">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                <p>
+                    <input type="submit" class = "btn-primary " value="Add comment">
+                </p>
+            </form>
+        {% endif %}
+    </div>
+
+    <script src="http://getbootstrap.com/2.3.2/assets/js/jquery.js"></script>
+    <script src="/js/main.js"></script>
+
 {% endblock%}
