@@ -26,8 +26,13 @@ class RegistrationForm(UserCreationForm):
         for field_name in self.fields:
             field = self.fields.get(field_name)
             if field:
-                if type(field.widget) in (forms.TextInput, forms.PasswordInput, forms.EmailInput):
+                if type(field.widget) in (forms.TextInput, forms.EmailInput):
                     field.widget = forms.TextInput(attrs={
+                            'placeholder': field.label,
+                            'class': 'form-block__input'
+                        })
+                if type(field.widget) in (forms.PasswordInput, ):
+                    field.widget = forms.PasswordInput(attrs={
                             'placeholder': field.label,
                             'class': 'form-block__input'
                         })
