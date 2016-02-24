@@ -15,9 +15,11 @@
                 {% include "card.html" %}
             {% endfor %}
         </div>
-        <div>
-            <a href = "/new_film" class = "btn btn-primary"> Добавить фильм </a>
-        </div>
 
+        {% if user.is_superuser %}
+            <div>
+                <a href = "/new_film" class = "btn btn-primary"> Добавить фильм </a>
+            </div>
+        {% endif %}
 	</div>
 {% endblock %}

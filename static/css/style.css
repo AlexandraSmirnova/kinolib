@@ -43,3 +43,41 @@
 .comment__info {
     color: #04406d;
 }
+
+.f-restore {
+    display: none;
+}
+
+.control-label{
+    width: 260px;
+}
+
+.update-film-form {
+    display: none;
+}
+
+.form-block{
+    margin: 0 auto;
+    text-align: center;
+    max-width: 400px;
+    background-color: #ad8961;
+    border-radius: 5px;
+}
+
+.form-block__input {
+    height: auto;
+    font-size: large;
+}
+
+.form-block__btn {
+    width: 210px;
+    margin: 5px;
+    font-size: large;
+}
+
+.form-block__error {
+    width: 210px;
+    margin: 0 auto;
+    border-radius: 5px;
+    font-size: large;
+}

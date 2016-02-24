@@ -1,21 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class = film-card>
-        <div class = "film-card__info">
-            <legend>{{ object }}</legend>
-            <div>{{ object.f_discription}}</div>
-            <div>Score:
-                 {%  for raiting in max_raiting %}
-                     <button>{{ raiting }}</button>
-                 {% endfor %}
+    <div class="film-card">
+        <div class="film-card__info">
+            <legend class="film-name">{{ object }}</legend>
+            <div>
+                Описание фильма: <span class="film-discription">{{ object.f_discription }}</span>
             </div>
+            <div>
+                Год создания: <span class="film-year">{{ object.f_year_creation }}</span>
+            </div>
+            <div>Score:
+                {% for raiting in max_raiting %}
+                    <button>{{ raiting }}</button>
+                {% endfor %}
+            </div>
+            {% if user.is_superuser %}
+
+                <div class="film-card__superuser-field">
+                    <div class='f-restore'>
+                        Фильм удален.
+                    </div>
+                    <a class="f-delete-restore" data-url="/delete" data-id="{{ object.pk }}" flag="1"> Удалить </a>
+                    <a class="f-update"> Редактировать </a>
+
+                </div>
+
+                <form method='post' class='update-film-form'>
+                    {% csrf_token %}
+
+                    <input type="text" name="name" placeholder="{{ object }}" class="form-block__input"><br>
+                    <input type="year" name="year" placeholder="{{ object.f_year_creation }}" class="form-block__input"><br>
+                    <textarea name="discription" cols="200" rows="4" placeholder="{{ object.f_discription}}" ></textarea><br>
+                    <input type="hidden" value="{{ object.pk }}" name="film-pk">
+                    {% if error %}
+                        <div class="alert-error form-block__error">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                    <p>
+                        <input type="submit" class="form-block__btn  btn btn-primary " value="Update film">
+                    </p>
+                </form>
+            {% endif %}
         </div>
 
-        <div class = "comments-block">
-            {%  for comment in comments %}
-                <div class = "comment">
-                    <div class = "comment__info">
+        <div class="comments-block">
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="comment__info">
                         <span>{{ comment.author }}</span>
                         <span> {{ comment.c_pub_date }}</span>
                     </div>
@@ -25,17 +58,17 @@
         </div>
 
         {% if user.is_authenticated %}
-            <form  method = 'post'  id='comment-form'>
+            <form method='post' class='comment-form'>
                 {% csrf_token %}
-                <textarea id="form-text" cols="200" rows="2" placeholder= "Input your comment here"></textarea>
+                <textarea id="form-text" class="form-block__input" cols="200" rows="2" placeholder="Input your comment here"></textarea>
                 <input type="hidden" value="{{ object.pk }}" id="film_info">
                 {% if error %}
-                    <div class = "alert-error input-xlarge">
+                    <div class="alert-error input-xlarge">
                         {{ error }}
                     </div>
                 {% endif %}
                 <p>
-                    <input type="submit" class = "btn-primary " value="Add comment">
+                    <input type="submit" class="form-block__btn  btn-primary " value="Add comment">
                 </p>
             </form>
         {% endif %}
@@ -44,4 +77,4 @@
     <script src="http://getbootstrap.com/2.3.2/assets/js/jquery.js"></script>
     <script src="/js/main.js"></script>
 
-{% endblock%}
+{% endblock %}

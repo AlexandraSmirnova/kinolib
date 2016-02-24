@@ -1,20 +1,24 @@
 # encoding: utf-8
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+
+import hashlib
+import random
+
+import django.core.mail
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.views.generic import ListView, DetailView
+
 from forms import *
 from models import *
-import django.core.mail
-import hashlib, datetime, random
-from django.utils import timezone
 
 
 class Main(ListView):
     # model = Film
-    queryset = Film.objects.order_by("-f_name")
+    queryset = Film.objects.order_by("-f_name").filter(f_flag=0)
     template_name = "main.html"
 
     def get_context_data(self, **kwargs):
@@ -23,7 +27,7 @@ class Main(ListView):
 
 
 class FilmListByDate(ListView):
-    queryset = Film.objects.order_by('-f_pub_date')
+    queryset = Film.objects.order_by('-f_pub_date').filter(f_flag=0)
     template_name = "main.html"
 
     def get_context_data(self, **kwargs):
@@ -32,7 +36,7 @@ class FilmListByDate(ListView):
 
 
 class FilmListByRating(ListView):
-    queryset = Film.objects.order_by('-f_rating')
+    queryset = Film.objects.order_by('-f_rating').filter(f_flag=0)
     template_name = "main.html"
 
     def get_context_data(self, **kwargs):
@@ -51,7 +55,7 @@ def login(request):
             if user1 is not None:
                 auth.login(request, user1)
                 return redirect('/')
-        except:
+        except Exception:
             context['error'] = "Email or password is incorrect"
             return render(request, 'login.html', context)
     return render(request, 'login.html', context)
@@ -94,7 +98,6 @@ def register(request):
             context['title'] = u"Подтверждение регистрации"
             context['message'] = u"На указанный почтовый ящик для подтверждения регистрации было отправлено письмо"
             return render(request, 'message.html', context)
-        #return render(request, 'registration.html', context)
     else:
         context['form'] = form
     return render(request, 'registration.html', context)
@@ -160,9 +163,9 @@ class FilmItem(DetailView):
 def add_comment(request):
     import json
     if request.method == 'POST':
-        post_text = request.POST.get('the_post')
-        film = Film.objects.get(pk=request.POST.get('film'))
         response_data = {}
+        film = Film.objects.get(pk=request.POST.get('film'))
+        post_text = request.POST.get('the_post')
 
         post = Comment(c_text=post_text, author=request.user, film=film)
         post.save()
@@ -176,3 +179,50 @@ def add_comment(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         return HttpResponse(json.dumps({"nothing to see": "this isn't happening"}), content_type="application/json")
+
+
+@login_required
+def delete_restore(request):
+    import json
+    if request.method == 'POST':
+        response_data = {}
+        flag = int(request.POST.get('flag'))
+        film = Film.objects.get(pk=request.POST.get('id'))
+
+        film.f_flag = flag
+        film.save()
+
+        response_data['id'] = film.pk
+        response_data['flag'] = flag
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({"result": "nothing has happened"}), content_type="application/json")
+
+
+@login_required
+def update(request):
+    import json
+    if request.method == 'POST':
+        response_data = {}
+
+        film = Film.objects.get(pk=request.POST.get('film'))
+        name = str(request.POST.get('name'))
+        year = str(request.POST.get('year'))
+        discript = str(request.POST.get('discription'))
+
+        if name:
+            film.f_name = name
+        if year:
+            film.f_year_creation = year
+        if discript:
+            film.f_discription = discript
+        film.save()
+
+        response_data['name'] = film.f_name
+        response_data['year'] = film.f_year_creation
+        response_data['discription'] = film.f_discription
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({"result": "nothing has happened"}), content_type="application/json")

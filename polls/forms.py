@@ -23,6 +23,14 @@ class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
+        for field_name in self.fields:
+            field = self.fields.get(field_name)
+            if field:
+                if type(field.widget) in (forms.TextInput, forms.PasswordInput, forms.EmailInput):
+                    field.widget = forms.TextInput(attrs={
+                            'placeholder': field.label,
+                            'class': 'form-block__input'
+                        })
 
     # clean email field
     def clean_email(self):
@@ -51,7 +59,25 @@ class FilmForm(forms.ModelForm):
 
         fields = ('f_name', 'f_discription', 'f_year_creation')
         widgets = {
-            'f_name': forms.TextInput(
-                attrs={'required': True}
+            'f_discription': forms.Textarea(
+                attrs={
+                    'rows': 4,
+                    'placeholder': u"Описание",
+                    'class': 'form-block__input',
+                    'required': True,
+                }
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(FilmForm, self).__init__(*args, **kwargs)
+
+        for field_name in self.fields:
+            field = self.fields.get(field_name)
+            if field:
+                if type(field.widget) in (forms.TextInput, forms.NumberInput):
+                    field.widget = forms.TextInput(attrs={
+                            'placeholder': field.label,
+                            'class': 'form-block__input',
+                            'required': True,
+                        })

@@ -1,6 +1,6 @@
 // Submit post on submit
 
-$(function() {
+$(function () {
     // using jQuery
     function getCookie(name) {
         var cookieValue = null;
@@ -33,9 +33,55 @@ $(function() {
         }
     });
 
-    $('#comment-form').on('submit', function (event) {
+
+    $('.comment-form').on('submit', function (event) {
         event.preventDefault();
         create_comment();
+        return false;
+    });
+
+
+    $('.f-delete-restore').click( function() {
+        var $btn = $(this);
+
+        // AJAX for delete and restore film
+        $.ajax({
+            url: $btn.data('url'),
+            type: 'POST',
+            data: {'id': $btn.data('id'), 'flag': $btn.attr('flag')},
+
+            success: function (response) {
+                if (response.flag == 1) {
+                    $('.f-update').css({"display": "none"});
+                    $('.f-delete-restore').html('Восстановить');
+                    $('.f-delete-restore').attr("flag", 0);
+                    $('.f-restore').css({"display": "block"});
+
+                } else {
+                    $('.f-restore').css({"display": "none"});
+                    $('.f-update').css({"display": "block"});
+                    $('.f-delete-restore').html('Удалить');
+                    $('.f-delete-restore').attr("flag", 1);
+                }
+            }
+
+        });
+        return false;
+
+    });
+
+    $(".f-update").click(function(){
+        if( $(".update-film-form").css("display") == 'none'){
+            $('.update-film-form').css({"display": "block"});
+        } else {
+            $('.update-film-form').css({"display": "none"});
+        }
+    });
+
+
+    $('.update-film-form').on('submit', function (event) {
+        event.preventDefault();
+        update_film();
         return false;
     });
 
@@ -44,15 +90,15 @@ $(function() {
         $.ajax({
             url: "/comment", // the endpoint
             type: "POST", // http method
-            data: { the_post: $('#form-text').val(), film: $('#film_info').val()}, // data sent with the post request
+            data: {the_post: $('#form-text').val(), film: $('#film_info').val()}, // data sent with the post request
 
             // handle a successful response
-            success: function (data) {
-                console.log(data); // log the returned json to the console
+            success: function (response) {
+                console.log(response); // log the returned json to the console
                 console.log("success"); // another sanity check
                 $('.comments-block').append(
-                    "<div class = 'comment'> <div class='comment__info'><span>" + data.author+
-                    "</span><span>" + data.created + "</span></div><div>" + data.text  + "</div></div>"
+                    "<div class = 'comment'> <div class='comment__info'><span>" + response.author +
+                    "</span><span>" + response.created + "</span></div><div>" + response.text + "</div></div>"
                 )
 
             },
@@ -66,4 +112,36 @@ $(function() {
 
     }
 
+
+    // AJAX for updating film
+    function update_film() {
+        $.ajax({
+            url: "/update", // the endpoint
+            type: "POST", // http method
+            data: {
+                film: $("input[name$='film-pk']").val(),
+                name: $("input[name$='name']").val(),
+                year: $("input[name$='year']").val(),
+                discription: $("textarea[name$='discription']").val(),
+            }, // data sent with the post request
+
+            // handle a successful response
+            success: function (response) {
+                console.log("success"); // sanity check
+                $(".film-name").html(response.name);
+                $(".film-year").html(response.year);
+                $(".film-discription").html(response.discription);
+            },
+
+            // handle a non-successful response
+            error: function (xhr) {
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+
+        });
+    }
+
+
 });
+
+
