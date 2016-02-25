@@ -1,11 +1,11 @@
 # encoding: utf-8
-import datetime
 import hashlib
 import random
 
 import django.core.mail
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
@@ -226,3 +226,40 @@ def update(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         return HttpResponse(json.dumps({"result": "nothing has happened"}), content_type="application/json")
+
+
+@login_required
+def add_score(request):
+    import json
+    response_data = {}
+    if request.method == 'POST':
+
+        film_id = int(request.POST.get('id'))
+        mark = int(request.POST.get('mark'))
+        try:
+            film = Film.objects.get(pk=film_id)
+            scores = Score.objects.filter(film=film_id)
+            user_score = scores.filter(voter=request.user.id)
+
+            if user_score.count() == 0:
+                print(user_score.count())
+                print(mark)
+                print(film_id)
+                print(request.user.id)
+                new_score = Score(value=mark, film=film, voter=request.user)
+                new_score.save()
+                response_data['message'] = u"Спасибо за оценку"
+            else:
+                new_score = user_score[0]
+                new_score.value = mark
+                new_score.save()
+                response_data['message'] = u"Ваша оценка изменена"
+            film.f_rating = Score.objects.filter(film=film_id).aggregate(Avg('value'))['value__avg']
+            film.save()
+            response_data['rating'] = film.f_rating
+        except Exception:
+            response_data['message'] = str(Exception.message)
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        response_data['message'] = "nothing has happened"
+        return HttpResponse(json.dumps(response_data), content_type="application/json")

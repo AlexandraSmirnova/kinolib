@@ -85,6 +85,31 @@ $(function () {
         return false;
     });
 
+    $('.film-score').click( function() {
+        var $btn = $(this);
+
+        // AJAX for delete and restore film
+        $.ajax({
+            url: $btn.data('url'),
+            type: 'POST',
+            data: {'id': $btn.data('id'), 'mark': $btn.data('mark')},
+
+            success: function (response) {
+                alert(response.message);
+                $('.film-rating').html(response.rating);
+            }
+            ,
+
+            // handle a non-successful response
+            error: function (xhr) {
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+
+        });
+        return false;
+
+    });
+
     // AJAX for posting
     function create_comment() {
         $.ajax({

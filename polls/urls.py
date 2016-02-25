@@ -13,5 +13,6 @@ urlpatterns = patterns('',
 	url(r'^film/(?P<pk>\d+)$', views.FilmItem.as_view(), name = 'film'),
 	url(r'^comment$', views.add_comment, name = 'add comment'),
 	url(r'^delete$', views.delete_restore, name= 'delete-restore film'),
-	url(r'^update$', views.update, name= 'update film')
+	url(r'^update$', views.update, name= 'update film'),
+	url(r'^score$', views.add_score, name= 'add score')
 )

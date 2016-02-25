@@ -8,11 +8,15 @@
                 Описание фильма: <span class="film-discription">{{ object.f_discription }}</span>
             </div>
             <div>
+                Рейтинг : <span class="film-rating">{{ object.f_rating}}</span>
+            </div>
+            <div>
                 Год создания: <span class="film-year">{{ object.f_year_creation }}</span>
             </div>
+
             <div>Score:
-                {% for raiting in max_raiting %}
-                    <button>{{ raiting }}</button>
+                {% for score in max_raiting %}
+                    <button class = 'film-score' data-url = '/score' data-id = '{{ object.pk }}' data-mark = '{{ score }}'>{{ score }}</button>
                 {% endfor %}
             </div>
             {% if user.is_superuser %}

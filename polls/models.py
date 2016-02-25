@@ -22,7 +22,7 @@ class Film(models.Model):
     f_discription = models.TextField(verbose_name=u'Описание')
     f_pub_date = models.DateTimeField(default=now(), verbose_name=u'Дата публикации')
     f_year_creation = models.IntegerField(verbose_name=u'Год создания', default=2000)
-    f_rating = models.IntegerField(verbose_name=u'Рейтинг', default=0)
+    f_rating = models.FloatField(verbose_name=u'Рейтинг', default=0)
     f_flag = models.NullBooleanField(default=0)
 
     def __str__(self):
