@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2e67c333-0891-4eac-9255-ab8dc81e7770" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log/access.log" afterPath="$PROJECT_DIR$/log/access.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/log/error.log" afterPath="$PROJECT_DIR$/log/error.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/models.py" afterPath="$PROJECT_DIR$/polls/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/urls.py" afterPath="$PROJECT_DIR$/polls/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/polls/views.py" afterPath="$PROJECT_DIR$/polls/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/main.js" afterPath="$PROJECT_DIR$/static/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/film.html" afterPath="$PROJECT_DIR$/templates/film.html" />
     </list>
     <ignored path="kinolib.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -606,7 +599,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="57" y="24" width="1309" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27196333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -614,7 +607,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287037" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33950618" sideWeight="0.48772764" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33950618" sideWeight="0.48772764" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287037" sideWeight="0.49722883" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />

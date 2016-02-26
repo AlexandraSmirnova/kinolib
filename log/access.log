@@ -1263,3 +1263,4 @@
 127.0.0.1 - - [25/Feb/2016:18:45:03 +0300] "GET /pub_date HTTP/1.1" 200 1014 "http://kinolib.com/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"
 127.0.0.1 - - [25/Feb/2016:18:45:05 +0300] "GET /rating HTTP/1.1" 200 1010 "http://kinolib.com/pub_date" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"
 127.0.0.1 - - [25/Feb/2016:18:47:38 +0300] "GET /film/16 HTTP/1.1" 200 1281 "http://kinolib.com/rating" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"
+127.0.0.1 - - [25/Feb/2016:18:56:14 +0300] "GET /film/16 HTTP/1.1" 200 1281 "http://kinolib.com/rating" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"
