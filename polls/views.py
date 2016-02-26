@@ -91,7 +91,7 @@ def register(request):
             # Send email with activation key
             email_subject = 'Подтверждение регистрации'
             email_body = "Hey %s, thanks for signing up. To activate your account, click this link within \
-                                48hours http://kinolib.com/confirm/%s" % (username, activation_key)
+                                48hours http://95.213.199.8/confirm/%s" % (username, activation_key)
 
             django.core.mail.send_mail(email_subject, email_body, 'myemail@example.com',
                                        [email], fail_silently=False)

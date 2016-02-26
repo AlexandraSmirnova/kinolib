@@ -13,12 +13,13 @@
             <div>
                 Год создания: <span class="film-year">{{ object.f_year_creation }}</span>
             </div>
-
+{% if user.is_authenticated %}
             <div>Score:
                 {% for score in max_raiting %}
                     <button class = 'film-score' data-url = '/score' data-id = '{{ object.pk }}' data-mark = '{{ score }}'>{{ score }}</button>
                 {% endfor %}
             </div>
+{% endif %}
             {% if user.is_superuser %}
 
                 <div class="film-card__superuser-field">
