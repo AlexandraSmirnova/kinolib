@@ -6,7 +6,7 @@ import django.core.mail
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
@@ -18,7 +18,6 @@ from models import *
 
 
 class Main(ListView):
-    # model = Film
     queryset = Film.objects.order_by("-f_name").filter(f_flag=0)
     template_name = "main.html"
 
@@ -28,7 +27,7 @@ class Main(ListView):
 
 
 class FilmListByDate(ListView):
-    queryset = Film.objects.order_by('-f_pub_date').filter(f_flag=0)
+    queryset = Film.objects.order_by('-f_pub_date').filter(f_flag=0)[:20]
     template_name = "main.html"
 
     def get_context_data(self, **kwargs):
@@ -37,11 +36,20 @@ class FilmListByDate(ListView):
 
 
 class FilmListByRating(ListView):
-    queryset = Film.objects.order_by('-f_rating').filter(f_flag=0)
+    queryset = Film.objects.order_by('-f_rating').filter(f_flag=0)[:20]
     template_name = "main.html"
 
     def get_context_data(self, **kwargs):
         context = super(FilmListByRating, self).get_context_data(**kwargs)
+        return context
+
+
+class FilmListByScores(ListView):
+    queryset = Film.objects.annotate(num_scores=Count("score_film")).order_by('-num_scores').filter(f_flag=0)[:20]
+    template_name = "main.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(FilmListByScores, self).get_context_data(**kwargs)
         return context
 
 
