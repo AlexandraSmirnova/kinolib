@@ -5,6 +5,7 @@ import random
 import django.core.mail
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.db.models import Avg
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404
@@ -46,6 +47,8 @@ class FilmListByRating(ListView):
 
 def login(request):
     context = {}
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse("main"))
     if request.POST:
         email = request.POST['email']
         password = request.POST['password']
@@ -66,8 +69,8 @@ def register(request):
     form = RegistrationForm()
     context['title'] = u'Регистрация'
     context['form_url'] = '/reg'
-    # if request.user.is_authenticated:
-    #    return HttpResponseRedirect(reverse("main"))
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(reverse("main"))
     if request.POST:
         form = RegistrationForm(request.POST)
         context['form'] = form
