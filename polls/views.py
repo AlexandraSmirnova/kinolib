@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import ListView, DetailView
-
+from jinja2 import utils
 from forms import *
 from models import *
 
@@ -165,7 +165,7 @@ def add_comment(request):
     if request.method == 'POST':
         response_data = {}
         film = Film.objects.get(pk=request.POST.get('film'))
-        post_text = request.POST.get('the_post')
+        post_text = str(utils.escape(request.POST.get('the_post')))
 
         post = Comment(c_text=post_text, author=request.user, film=film)
         post.save()
@@ -207,9 +207,9 @@ def update(request):
         response_data = {}
 
         film = Film.objects.get(pk=request.POST.get('film'))
-        name = str(request.POST.get('name'))
-        year = str(request.POST.get('year'))
-        discript = str(request.POST.get('discription'))
+        name = str(utils.escape(request.POST.get('name')))
+        year = str(utils.escape(request.POST.get('year')))
+        discript = str(utils.escape(request.POST.get('discription')))
 
         if name:
             film.f_name = name
