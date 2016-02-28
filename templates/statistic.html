@@ -2,7 +2,9 @@
 
 {% block content %}
     <div class='statistic-block'>
-        <img src="/img/testplot{{ film_id }}.png">
+        <img src="/img/testplot.png" >
     </div>
-
+    {% if film_id %}
+        <a href="/film/{{ film_id }}" class="btn btn-primary">Назад к фильму</a>
+    {% endif %}
 {% endblock %}

@@ -15,7 +15,7 @@
 .film-mini-card {
     margin: 7px;
     padding: 10px;
-    min-height: 50px;
+    min-height: 120px;
     float: left;
     max-width: 360px;
     min-width: 180px;
@@ -33,6 +33,11 @@
     background-color: #ad8961;
     padding: 20px;
     border-radius: 5px;
+}
+
+.film-rating,.film-mini-card__rating{
+    color: #dd0000;
+    font-weight: bold;
 }
 
 .comment {

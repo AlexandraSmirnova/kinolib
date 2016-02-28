@@ -3,7 +3,11 @@ import hashlib
 import random
 
 import Image
+import matplotlib
+
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
 # import plotly.plotly as py
 import django.core.mail
@@ -216,19 +220,6 @@ def hide_comment(request):
 
 
 @login_required
-def statistic(request, film_id):
-    context = {}
-    x = Score.objects.values('value').filter(film=film_id)
-    new_arr = []
-    for num in x:
-        new_arr.append(num['value'])
-    print(new_arr)
-    make_histogram(new_arr, 'Histogrum of scores', film_id)
-    context['film_id'] = film_id
-    return render(request, 'statistic.html', context)
-
-
-@login_required
 def delete_restore(request):
     import json
     if request.method == 'POST':
@@ -312,22 +303,44 @@ def add_score(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-def make_histogram(x, title, num):
-    n_bins = range(1, 11)
+@login_required
+def statistic(request, film_id):
+    context = {}
+    x = Score.objects.values('value').filter(film=film_id)
+    new_arr = []
+    for num in x:
+        new_arr.append(num['value'])
 
+    make_histogram(new_arr, 'Histogram of scores')
+    context['film_id'] = film_id
+    return render(request, 'statistic.html', context)
+
+
+@login_required
+def user_statistic(request):
+    context = {}
+    x = Score.objects.values('value').filter(voter=request.user.id).filter(film__f_flag=0)
+    new_arr = []
+    for num in x:
+        new_arr.append(num['value'])
+    make_histogram(new_arr, 'Histogram of my scores')
+    return render(request, 'statistic.html', context)
+
+
+def make_histogram(x, title):
+    n_bins = range(1, 11)
     fig = plt.figure()
     ax0 = plt.subplot()
 
     colors = ['red']
     ax0.hist(x, n_bins, histtype='bar', normed=1, color=colors, label=['scores'])
-    ax0.legend(prop={'size': 10})
+    ax0.axis([1, 10, 0, 1])
+    # ax0.legend(prop={'size': 10})
     ax0.set_title(title)
 
-    plt.tight_layout()
-    # plt.show()
-    # f = open(, 'wb')
-    plt.savefig('static/img/testplot%s.png' % (num))
-    # f.close()
-    Image.open('static/img/testplot.png').save('static/img/testplot.jpg', 'JPEG')
+    # plt.tight_layout()
+    # file = PdfPages('static/img/testplot.png')
+    plt.savefig('static/img/testplot.png')
+    # mage.open('static/img/testplot.png').save('static/img/testplot.jpg', 'JPEG')
     plt.close(fig)
-    return 1
+    return
