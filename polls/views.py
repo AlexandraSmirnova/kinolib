@@ -188,7 +188,7 @@ def add_comment(request):
         response_data['result'] = 'Create post successful!'
         response_data['postpk'] = post.pk
         response_data['text'] = post.c_text
-        response_data['created'] = post.c_pub_date.strftime('%B %d, %Y %I:%M %p')
+        response_data['created'] = post.c_pub_date.strftime(' %b. %d, %Y, %I:%M %P')
         response_data['author'] = post.author.username
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -206,7 +206,7 @@ def hide_comment(request):
 
         comment.c_flag = flag
         comment.save()
-        
+
         response_data['id'] = comment.pk
         response_data['flag'] = flag
 

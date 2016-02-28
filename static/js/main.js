@@ -151,7 +151,7 @@ $(function () {
                 console.log("success"); // another sanity check
                 $('.comments-block').append(
                     "<div class = 'comment'> <div class='comment__info'><span>" + response.author +
-                    "</span><span>" + response.created + "</span></div><div>" + response.text + "</div></div>"
+                    " </span><span>" + response.created + "</span></div><div>" + response.text + "</div></div>"
                 )
 
             },
