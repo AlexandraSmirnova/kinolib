@@ -2,14 +2,11 @@
 import hashlib
 import random
 
-import Image
 import matplotlib
 
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
-import numpy as np
-# import plotly.plotly as py
+
 import django.core.mail
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
