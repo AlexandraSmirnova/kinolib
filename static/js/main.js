@@ -41,7 +41,7 @@ $(function () {
     });
 
 
-    $('.f-delete-restore').click( function() {
+    $('.f-delete-restore').click(function () {
         var $btn = $(this);
 
         // AJAX for delete and restore film
@@ -70,8 +70,36 @@ $(function () {
 
     });
 
-    $(".f-update").click(function(){
-        if( $(".update-film-form").css("display") == 'none'){
+    $('.c-delete-restore').click(function () {
+        var $btn = $(this);
+        console.log($btn);
+        // AJAX for delete and restore film
+        $.ajax({
+            url: $btn.data('url'),
+            type: 'POST',
+            data: {'id': $btn.data('id'), 'flag': $btn.attr('flag')},
+
+            success: function (response) {
+                if (response.flag == 1) {
+                    $btn.html('Восстановить');
+                    $btn.attr('flag', 0);
+                    console.log("flag is 1");
+                    console.log($btn.attr('flag'));
+                } else {
+                    $btn.html('Скрыть');
+                    $btn.attr("flag", 1);
+                    console.log("flag is not 1");
+                    //$('.f-delete-restore').attr("flag", 1);
+                }
+            }
+
+        });
+        return false;
+
+    });
+
+    $(".f-update").click(function () {
+        if ($(".update-film-form").css("display") == 'none') {
             $('.update-film-form').css({"display": "block"});
         } else {
             $('.update-film-form').css({"display": "none"});
@@ -85,7 +113,7 @@ $(function () {
         return false;
     });
 
-    $('.film-score').click( function() {
+    $('.film-score').click(function () {
         var $btn = $(this);
 
         // AJAX for delete and restore film
@@ -147,7 +175,7 @@ $(function () {
                 film: $("input[name$='film-pk']").val(),
                 name: $("input[name$='name']").val(),
                 year: $("input[name$='year']").val(),
-                discription: $("textarea[name$='discription']").val(),
+                discription: $("textarea[name$='discription']").val()
             }, // data sent with the post request
 
             // handle a successful response

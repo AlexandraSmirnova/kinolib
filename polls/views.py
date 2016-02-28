@@ -2,6 +2,10 @@
 import hashlib
 import random
 
+import Image
+import matplotlib.pyplot as plt
+import numpy as np
+# import plotly.plotly as py
 import django.core.mail
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -166,7 +170,7 @@ class FilmItem(DetailView):
     def get_context_data(self, **kwargs):
         context = super(FilmItem, self).get_context_data(**kwargs)
         context['max_raiting'] = range(1, 11)
-        context['comments'] = Comment.objects.filter(film=self.object)
+        context['comments'] = Comment.objects.filter(film=self.object).filter(c_flag=0)
         return context
 
 
@@ -176,7 +180,7 @@ def add_comment(request):
     if request.method == 'POST':
         response_data = {}
         film = Film.objects.get(pk=request.POST.get('film'))
-        post_text = str(utils.escape(request.POST.get('the_post')))
+        post_text = str(utils.escape(request.POST.get('the_post'))).encode('utf-8')
 
         post = Comment(c_text=post_text, author=request.user, film=film)
         post.save()
@@ -190,6 +194,38 @@ def add_comment(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         return HttpResponse(json.dumps({"nothing to see": "this isn't happening"}), content_type="application/json")
+
+
+@login_required
+def hide_comment(request):
+    import json
+    if request.method == 'POST':
+        response_data = {}
+        flag = int(request.POST.get('flag'))
+        comment = Comment.objects.get(pk=request.POST.get('id'))
+
+        comment.c_flag = flag
+        comment.save()
+        
+        response_data['id'] = comment.pk
+        response_data['flag'] = flag
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        return HttpResponse(json.dumps({"result": "nothing has happened"}), content_type="application/json")
+
+
+@login_required
+def statistic(request, film_id):
+    context = {}
+    x = Score.objects.values('value').filter(film=film_id)
+    new_arr = []
+    for num in x:
+        new_arr.append(num['value'])
+    print(new_arr)
+    make_histogram(new_arr, 'Histogrum of scores', film_id)
+    context['film_id'] = film_id
+    return render(request, 'statistic.html', context)
 
 
 @login_required
@@ -274,3 +310,24 @@ def add_score(request):
     else:
         response_data['message'] = "nothing has happened"
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def make_histogram(x, title, num):
+    n_bins = range(1, 11)
+
+    fig = plt.figure()
+    ax0 = plt.subplot()
+
+    colors = ['red']
+    ax0.hist(x, n_bins, histtype='bar', normed=1, color=colors, label=['scores'])
+    ax0.legend(prop={'size': 10})
+    ax0.set_title(title)
+
+    plt.tight_layout()
+    # plt.show()
+    # f = open(, 'wb')
+    plt.savefig('static/img/testplot%s.png' % (num))
+    # f.close()
+    Image.open('static/img/testplot.png').save('static/img/testplot.jpg', 'JPEG')
+    plt.close(fig)
+    return 1

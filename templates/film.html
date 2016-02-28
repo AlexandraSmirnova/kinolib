@@ -3,7 +3,7 @@
 {% block content %}
     <div class="film-card">
         <div class="film-card__info">
-            <legend class="film-name">{{ object }}</legend>
+            <legend class="film-name"> {{ object }}</legend>
             <div>
                 Описание фильма: <span class="film-discription">{{ object.f_discription }}</span>
             </div>
@@ -13,13 +13,17 @@
             <div>
                 Год создания: <span class="film-year">{{ object.f_year_creation }}</span>
             </div>
-{% if user.is_authenticated %}
-            <div>Score:
-                {% for score in max_raiting %}
-                    <button class = 'film-score' data-url = '/score' data-id = '{{ object.pk }}' data-mark = '{{ score }}'>{{ score }}</button>
-                {% endfor %}
-            </div>
-{% endif %}
+            {% if user.is_authenticated %}
+                <div>
+                    Поствить оценку:
+                    {% for score in max_raiting %}
+                        <button class = 'film-score' data-url = '/score' data-id = '{{ object.pk }}' data-mark = '{{ score }}'>{{ score }}</button>
+                    {% endfor %}
+                </div>
+                <!--<div>
+                    <a href="/statistic/{{ object.pk }}">Распределение оценок</a>
+                </div>-->
+            {% endif %}
             {% if user.is_superuser %}
 
                 <div class="film-card__superuser-field">
@@ -58,6 +62,9 @@
                         <span> {{ comment.c_pub_date }}</span>
                     </div>
                     <div>{{ comment }}</div>
+                    {% if user.is_superuser %}
+                        <div> <a class="c-delete-restore" data-url="/hide_comment" data-id="{{ comment.pk }}" flag="1">Скрыть</a> </div>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>
