@@ -17,6 +17,6 @@ urlpatterns = patterns('',
                        url(r'^delete$', views.delete_restore, name='delete-restore film'),
                        url(r'^update$', views.update, name='update film'),
                        url(r'^score$', views.add_score, name='add score'),
-                       url(r'^statistic/(?P<film_id>\d+)$', views.statistic, name='statistic'),
-                       url(r'^user_statistic$', views.user_statistic, name='user statistic')
+                       #url(r'^statistic/(?P<film_id>\d+)$', views.statistic, name='statistic'),
+                       #url(r'^user_statistic$', views.user_statistic, name='user statistic')
                        )
