@@ -277,10 +277,6 @@ def add_score(request):
             user_score = scores.filter(voter=request.user.id)
 
             if user_score.count() == 0:
-                print(user_score.count())
-                print(mark)
-                print(film_id)
-                print(request.user.id)
                 new_score = Score(value=mark, film=film, voter=request.user)
                 new_score.save()
                 response_data['message'] = u"Спасибо за оценку"
